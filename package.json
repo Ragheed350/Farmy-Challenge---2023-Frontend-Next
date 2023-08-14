@@ -9,11 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.4",
+    "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
+    "fs.promises": "^0.1.2",
     "next": "13.4.13",
+    "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "styled-components": "^6.0.7",
     "react-redux": "^8.1.2",
-    "fs.promises": "^0.1.2"
+    "styled-components": "^6.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "20.5.0",
+    "typescript": "5.1.6"
   }
 }
