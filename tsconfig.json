@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"],
+      "@/data/*": ["./src/data/*"],
+      "@/redux/*": ["./src/redux/*"],
+      "@/types/*": ["./src/types/*"]
+    },
     "lib": [
       "dom",
       "dom.iterable",

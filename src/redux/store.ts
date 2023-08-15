@@ -1,14 +1,25 @@
 "use client";
-import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import SaladSlice from "../redux/salad";
+import {
+  Action,
+  combineReducers,
+  configureStore,
+  ThunkAction,
+} from "@reduxjs/toolkit";
+import SaladSlice from "@/redux/salad";
+import IngredientSlice from "@/redux/ingredient";
+
+const reducers = combineReducers({
+  [SaladSlice.name]: SaladSlice.reducer,
+  [IngredientSlice.name]: IngredientSlice.reducer,
+});
 
 export const store = configureStore({
-  reducer: { [SaladSlice.name]: SaladSlice.reducer },
+  reducer: reducers,
 });
 
 const typestore = () =>
   configureStore({
-    reducer: { [SaladSlice.name]: SaladSlice.reducer },
+    reducer: reducers,
   });
 
 export type AppStore = ReturnType<typeof typestore>;

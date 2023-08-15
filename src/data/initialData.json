@@ -337,6 +337,10 @@
         {
           "id": 1,
           "numOfServings": 1
+        },
+        {
+          "id": 2,
+          "numOfServings": 4
         }
       ],
       "cost": 0.3,
