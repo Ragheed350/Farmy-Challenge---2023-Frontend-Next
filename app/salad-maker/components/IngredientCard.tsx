@@ -1,19 +1,21 @@
 import { useAppDispatch, useAppSelector } from "@/src/redux/hooks";
-import {
-  Button,
-  Card,
-  CardContent,
-  Grid,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import React, { useMemo } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import {
+  deleteSaladIngredientsState,
+  editSaladIngredientsState,
+  editSaladState,
+} from "@/src/redux/salad";
 
 type Props = {
   ingredient_id: number;
@@ -28,6 +30,34 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
     const ind = ingredients.findIndex((el) => el.id === ingredient_id);
     if (ind !== -1) return ingredients[ind];
   }, [ingredients, ingredient_id]);
+
+  const handleDeleteIngredient = () => {
+    dispatch(deleteSaladIngredientsState({ ingredient_id }));
+  };
+
+  const handleIncreaseIngredient = () => {
+    if (ingredient) {
+      dispatch(
+        editSaladIngredientsState({
+          ingredient_id,
+          numOfServings: numOfServings + 1,
+        })
+      );
+    }
+  };
+
+  const handleDecreaseIngredient = () => {
+    if (ingredient) {
+      if (numOfServings > 1) {
+        dispatch(
+          editSaladIngredientsState({
+            ingredient_id,
+            numOfServings: numOfServings - 1,
+          })
+        );
+      } else handleDeleteIngredient();
+    }
+  };
 
   return (
     <Card sx={{ width: "100%", my: 1, bgcolor: "#f1f1f1" }}>
@@ -46,13 +76,22 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
                 inputProps={{ sx: { textAlign: "center" } }}
                 InputProps={{
                   sx: { px: "5px" },
+
                   startAdornment: (
-                    <IconButton size="small" color="error">
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={handleDecreaseIngredient}
+                    >
                       <RemoveIcon />
                     </IconButton>
                   ),
                   endAdornment: (
-                    <IconButton size="small" color="primary">
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      onClick={handleIncreaseIngredient}
+                    >
                       <AddIcon />
                     </IconButton>
                   ),
@@ -67,7 +106,7 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
             <Typography>{ingredient?.costPerServing}$</Typography>
           </Grid>
           <Grid item>
-            <IconButton aria-label="delete">
+            <IconButton onClick={handleDeleteIngredient}>
               <DeleteIcon />
             </IconButton>
           </Grid>

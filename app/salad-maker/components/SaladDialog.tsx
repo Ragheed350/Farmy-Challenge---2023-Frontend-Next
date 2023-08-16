@@ -4,33 +4,28 @@ import {
   DialogContent,
   Typography,
   Stack,
-  Chip,
   Divider,
   TextField,
   Button,
   Tooltip,
+  DialogActions,
 } from "@mui/material";
-import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { GetSalad, UpdateSaladAsync, editSaladState } from "@/redux/salad";
+import {
+  UpdateSaladAsync,
+  editSaladState,
+  removeSaladState,
+} from "@/redux/salad";
 import { LoadingBox } from "@/src/components/LoadingBox";
 import { IngredientCard } from "./IngredientCard";
-import { FetchIngredients } from "@/src/redux/ingredient";
-import { UpdateSalad_Req } from "@/src/types";
 
 export const SaladDialog = () => {
   const dispatch = useAppDispatch();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  const id = searchParams.get("id");
 
   const { salad, salad_status } = useAppSelector((state) => state.Salad);
 
   const handleCloseSaladDialog = () => {
-    router.replace("/salad-maker");
+    dispatch(removeSaladState({}));
   };
 
   const handleChangeSize = (size: "small" | "medium" | "large") => {
@@ -47,18 +42,14 @@ export const SaladDialog = () => {
     }
   };
 
-  const handleSaveSalad = (req: UpdateSalad_Req) => {
-    dispatch(UpdateSaladAsync(req));
+  const handleSaveSalad = () => {
+    handleCloseSaladDialog();
+    dispatch(UpdateSaladAsync(salad));
   };
-
-  useEffect(() => {
-    dispatch(GetSalad({ id: Number(id) }));
-    dispatch(FetchIngredients());
-  }, []);
 
   return (
     <Dialog
-      open={!!id}
+      open={!!salad}
       onClose={handleCloseSaladDialog}
       PaperProps={{ sx: { maxWidth: "100%" } }}
     >
@@ -81,6 +72,7 @@ export const SaladDialog = () => {
               <Button
                 size="medium"
                 variant="contained"
+                color="secondary"
                 sx={{ borderRadius: 5, height: "fit-content" }}
                 onClick={() => handleChangeSize(salad.size)}
               >
@@ -97,10 +89,24 @@ export const SaladDialog = () => {
         <DialogContent>
           {salad?.ingredients.map((ingredient) => (
             <IngredientCard
+              key={ingredient.id}
               ingredient_id={ingredient.id}
               numOfServings={ingredient.numOfServings}
             />
           ))}
+
+          <DialogActions>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleCloseSaladDialog}
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleSaveSalad}>
+              Save
+            </Button>
+          </DialogActions>
         </DialogContent>
       </LoadingBox>
     </Dialog>

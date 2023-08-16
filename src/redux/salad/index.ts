@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RequestStatus } from "../../utils/constants";
 import { AppThunk } from "../store";
 import axios, { AxiosResponse } from "axios";
-import { Salad, UpdateSalad_Req } from "../../types";
+import { Salad } from "../../types";
+import router from "next/router";
+import { RedirectType } from "next/dist/client/components/redirect";
 
 export interface SaladState {
   status: RequestStatus;
@@ -38,19 +40,40 @@ const saladSlice = createSlice({
       } else state.salad_status = "error";
     },
     update(state, action) {
-      const ind = state.salads.findIndex(
-        (salad) => salad.id === action.payload.salad_id
-      );
-      if (ind) state.salads[ind] = action.payload.salad;
+      state.salads = action.payload;
+    },
+    removeSaladState(state, action) {
+      state.salad = undefined;
     },
     editSaladState(state, action) {
       state.salad[action.payload.key] = action.payload.value;
+    },
+    editSaladIngredientsState(state, action) {
+      const ind = state.salad.ingredients.findIndex(
+        (el) => el.id === action.payload.ingredient_id
+      );
+      if (ind !== -1)
+        state.salad.ingredients[ind] = {
+          id: action.payload.ingredient_id,
+          numOfServings: action.payload.numOfServings,
+        };
+    },
+    deleteSaladIngredientsState(state, action) {
+      const ind = state.salad.ingredients.findIndex(
+        (el) => el.id === action.payload.ingredient_id
+      );
+      if (ind !== -1) state.salad.ingredients.splice(ind, 1);
     },
   },
 });
 
 const { setStatus, setSaladStatus, fetch, get, update } = saladSlice.actions;
-export const { editSaladState } = saladSlice.actions;
+export const {
+  editSaladState,
+  editSaladIngredientsState,
+  deleteSaladIngredientsState,
+  removeSaladState,
+} = saladSlice.actions;
 
 export const FetchSalads = (): AppThunk => async (dispatch) => {
   dispatch(setStatus("loading"));
@@ -63,28 +86,25 @@ export const FetchSalads = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const GetSalad =
+export const GetSaladAsync =
   (req: { id: number }): AppThunk =>
   async (dispatch) => {
     dispatch(setSaladStatus("loading"));
     try {
-      // setTimeout(() => {
       dispatch(get(req.id));
-      // }, 1000);
-      // dispatch(setSaladStatus("data"));
     } catch (error) {
       dispatch(setSaladStatus("error"));
     }
   };
 
 export const UpdateSaladAsync =
-  (req: UpdateSalad_Req): AppThunk =>
+  (req: Salad): AppThunk =>
   async (dispatch) => {
     dispatch(setStatus("loading"));
     try {
-      setTimeout(() => {
-        dispatch(update({ salad_id: req.salad_id, salad: req.salad }));
-      }, 1000);
+      const res = await axios.post("/api/salads", req);
+
+      dispatch(update(res.data));
       dispatch(setStatus("data"));
     } catch (error) {
       dispatch(setStatus("error"));

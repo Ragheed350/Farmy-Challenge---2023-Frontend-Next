@@ -9,11 +9,6 @@ export interface Salad {
   price: number;
 }
 
-export interface UpdateSalad_Req {
-  salad_id: number;
-  salad: Salad;
-}
-
 export interface Ingredient {
   id: number;
   name: string;

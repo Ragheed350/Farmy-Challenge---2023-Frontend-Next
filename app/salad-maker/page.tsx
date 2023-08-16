@@ -11,26 +11,24 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import { useAppDispatch, useAppSelector } from "../../src/redux/hooks";
-import { FetchSalads } from "../../src/redux/salad";
-import { Button, Divider, Typography } from "@mui/material";
-import { useSearchParams, useRouter } from "next/navigation";
+import { FetchSalads, GetSaladAsync } from "../../src/redux/salad";
+import { Button, Typography } from "@mui/material";
 import { SaladDialog } from "./components/SaladDialog";
 import { LoadingBox } from "@/src/components/LoadingBox";
+import { FetchIngredients } from "@/src/redux/ingredient";
 
 const SaladMaker = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const hasId = searchParams.has("id");
 
-  const { salads, status } = useAppSelector((state) => state.Salad);
+  const { salads, salad, status } = useAppSelector((state) => state.Salad);
 
   const handleOpenSaladDialog = (id: number) => {
-    router.replace("?id=" + id);
+    dispatch(GetSaladAsync({ id }));
   };
 
   useEffect(() => {
     dispatch(FetchSalads());
+    dispatch(FetchIngredients());
   }, []);
 
   return (
@@ -38,8 +36,8 @@ const SaladMaker = () => {
       <Typography variant="h3" my={2}>
         Salad designer and planner
       </Typography>
+      {salad ? <SaladDialog /> : null}
       <LoadingBox status={status}>
-        {hasId ? <SaladDialog /> : null}
         <TableContainer component={Paper} sx={{ border: "1px solid gray" }}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
