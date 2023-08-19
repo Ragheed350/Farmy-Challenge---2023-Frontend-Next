@@ -62,11 +62,16 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
   return (
     <Card sx={{ width: "100%", my: 1, bgcolor: "#f1f1f1" }}>
       <CardContent>
-        <Grid container justifyContent={"space-between"} alignItems={"center"}>
-          <Grid item>
+        <Grid
+          container
+          spacing={2}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Grid item xs>
             <Typography variant="h6">{ingredient?.name}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item xs>
             <Stack direction="row" alignItems={"center"}>
               <Typography>servings: </Typography>
               <TextField

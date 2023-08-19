@@ -17,3 +17,13 @@ export interface Ingredient {
   supplierId: number;
   hoursFresh: number;
 }
+
+export interface BusinessLogic {
+  margin: number;
+  saladTypes: { small: Target; medium: Target; large: Target };
+}
+
+interface Target {
+  targetCost: number;
+  targetWeight: number;
+}

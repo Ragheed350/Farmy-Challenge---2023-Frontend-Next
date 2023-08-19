@@ -331,8 +331,8 @@
 	"salads": [
 		{
 			"id": 1,
-			"name": "Example ",
-			"size": "medium",
+			"name": "Example Salad",
+			"size": "small",
 			"ingredients": [
 				{
 					"id": 1,
@@ -2311,8 +2311,8 @@
 		"salads": [
 			{
 				"id": 1,
-				"name": "Example ",
-				"size": "medium",
+				"name": "Example Salad",
+				"size": "small",
 				"ingredients": [
 					{
 						"id": 1,

@@ -18,11 +18,11 @@ import {
 } from "@/redux/salad";
 import { LoadingBox } from "@/src/components/LoadingBox";
 import { IngredientCard } from "./IngredientCard";
+import { AddNewIngredient } from "./AddNewIngredient";
 
 export const SaladDialog = () => {
   const dispatch = useAppDispatch();
-
-  const { salad, salad_status } = useAppSelector((state) => state.Salad);
+  const { salad, salad_status, logic } = useAppSelector((state) => state.Salad);
 
   const handleCloseSaladDialog = () => {
     dispatch(removeSaladState({}));
@@ -53,12 +53,13 @@ export const SaladDialog = () => {
       onClose={handleCloseSaladDialog}
       PaperProps={{ sx: { maxWidth: "100%" } }}
     >
-      <LoadingBox status={salad_status} sx={{ minWidth: 800 }}>
+      <LoadingBox status={salad_status}>
         <DialogTitle>
           <Stack
             direction={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
+            spacing={1}
             py={1}
           >
             <TextField
@@ -81,12 +82,29 @@ export const SaladDialog = () => {
             </Tooltip>
           </Stack>
           <Divider />
-          <Typography variant="subtitle2" color="gray">
-            target cost/weight: 3,50$
-          </Typography>
+          <Stack direction={"row"} alignItems={"center"} spacing={1}>
+            <Typography variant="subtitle2" color="gray">
+              target cost/weight:
+            </Typography>
+            <Typography variant="subtitle1">
+              {" "}
+              {logic.saladTypes[salad.size].targetCost + "$"}
+              {" / "}
+              {logic.saladTypes[salad.size].targetWeight + "g"}
+            </Typography>
+          </Stack>
         </DialogTitle>
 
         <DialogContent>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Typography variant="subtitle2" color="gray">
+              total cost: {salad.cost}
+            </Typography>
+            <Typography variant="subtitle2" color="gray">
+              total weight: {salad.targetStock}
+            </Typography>
+          </Stack>
+
           {salad?.ingredients.map((ingredient) => (
             <IngredientCard
               key={ingredient.id}
@@ -94,6 +112,9 @@ export const SaladDialog = () => {
               numOfServings={ingredient.numOfServings}
             />
           ))}
+
+          {/* add new ingredient */}
+          <AddNewIngredient />
 
           <DialogActions>
             <Button
