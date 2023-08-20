@@ -13,7 +13,7 @@ import Container from "@mui/material/Container";
 import { useAppDispatch, useAppSelector } from "../../src/redux/hooks";
 import {
   FetchLogicAsync,
-  FetchSalads,
+  FetchSaladsAsync,
   GetSaladAsync,
 } from "../../src/redux/salad";
 import { Button, Typography } from "@mui/material";
@@ -31,7 +31,7 @@ const SaladMaker = () => {
   };
 
   useEffect(() => {
-    dispatch(FetchSalads());
+    dispatch(FetchSaladsAsync());
     dispatch(FetchIngredients());
     dispatch(FetchLogicAsync());
   }, []);
@@ -66,11 +66,13 @@ const SaladMaker = () => {
                     {row.name}
                   </StyledTableCell>
                   <StyledTableCell>{row.size}</StyledTableCell>
-                  <StyledTableCell>{row.ingredients.length}</StyledTableCell>
-                  <StyledTableCell>{row.cost}</StyledTableCell>
+                  <StyledTableCell>
+                    {"(" + row.ingredients.length + ")"}
+                  </StyledTableCell>
+                  <StyledTableCell>{row.cost + "$"}</StyledTableCell>
                   <StyledTableCell>{row.targetStock}</StyledTableCell>
                   <StyledTableCell>{row.currentStock}</StyledTableCell>
-                  <StyledTableCell>{row.price}</StyledTableCell>
+                  <StyledTableCell>{row.price + "$"}</StyledTableCell>
                   <StyledTableCell>
                     <Button onClick={() => handleOpenSaladDialog(row.id)}>
                       Edit

@@ -23,6 +23,7 @@ import { AddNewIngredient } from "./AddNewIngredient";
 export const SaladDialog = () => {
   const dispatch = useAppDispatch();
   const { salad, salad_status, logic } = useAppSelector((state) => state.Salad);
+  const { ingredients } = useAppSelector((state) => state.Ingredient);
 
   const handleCloseSaladDialog = () => {
     dispatch(removeSaladState({}));
@@ -45,6 +46,25 @@ export const SaladDialog = () => {
   const handleSaveSalad = () => {
     handleCloseSaladDialog();
     dispatch(UpdateSaladAsync(salad));
+  };
+
+  const getTotal = (
+    saladIngredients: { id: number; numOfServings: number }[],
+    type: "cost" | "weight"
+  ) => {
+    const typeKey = type === "cost" ? "costPerServing" : "weightPerServing";
+    const saladProducts = ingredients.filter((elem) => {
+      return saladIngredients.some((ele) => {
+        return ele.id === elem.id;
+      });
+    });
+
+    const sumCosts = saladProducts.reduce((prev, obj) => {
+      const numOfServings =
+        saladIngredients.find((el) => el.id === obj.id).numOfServings ?? 0;
+      return prev + obj[typeKey] * numOfServings;
+    }, 0);
+    return sumCosts;
   };
 
   return (
@@ -82,12 +102,11 @@ export const SaladDialog = () => {
             </Tooltip>
           </Stack>
           <Divider />
-          <Stack direction={"row"} alignItems={"center"} spacing={1}>
+          <Stack direction={"row"} alignItems={"center"} spacing={0.5}>
             <Typography variant="subtitle2" color="gray">
               target cost/weight:
             </Typography>
             <Typography variant="subtitle1">
-              {" "}
               {logic.saladTypes[salad.size].targetCost + "$"}
               {" / "}
               {logic.saladTypes[salad.size].targetWeight + "g"}
@@ -98,10 +117,11 @@ export const SaladDialog = () => {
         <DialogContent>
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Typography variant="subtitle2" color="gray">
-              total cost: {salad.cost}
+              total cost: {getTotal(salad.ingredients, "cost").toFixed(2) + "$"}
             </Typography>
             <Typography variant="subtitle2" color="gray">
-              total weight: {salad.targetStock}
+              total weight:{" "}
+              {getTotal(salad.ingredients, "weight").toFixed(2) + "g"}
             </Typography>
           </Stack>
 

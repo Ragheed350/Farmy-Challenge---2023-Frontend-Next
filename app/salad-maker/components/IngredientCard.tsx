@@ -105,10 +105,14 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
             </Stack>
           </Grid>
           <Grid item>
-            <Typography>{ingredient?.weightPerServing}g</Typography>
+            <Typography>
+              {(ingredient?.weightPerServing * numOfServings).toFixed(2)}g
+            </Typography>
           </Grid>
           <Grid item>
-            <Typography>{ingredient?.costPerServing}$</Typography>
+            <Typography>
+              {(ingredient?.costPerServing * numOfServings).toFixed(2)}$
+            </Typography>
           </Grid>
           <Grid item>
             <IconButton onClick={handleDeleteIngredient}>

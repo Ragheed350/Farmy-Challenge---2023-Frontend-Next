@@ -91,7 +91,7 @@ export const {
   removeSaladState,
 } = saladSlice.actions;
 
-export const FetchSalads = (): AppThunk => async (dispatch) => {
+export const FetchSaladsAsync = (): AppThunk => async (dispatch) => {
   dispatch(setStatus("loading"));
   try {
     const res = await axios.get<Salad[]>("/api/salads");
