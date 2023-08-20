@@ -17,13 +17,14 @@ import {
   removeSaladState,
 } from "@/redux/salad";
 import { LoadingBox } from "@/src/components/LoadingBox";
-import { IngredientCard } from "./IngredientCard";
+import { ProductCard } from "./ProductCard";
 import { AddNewIngredient } from "./AddNewIngredient";
 
 export const SaladDialog = () => {
   const dispatch = useAppDispatch();
-  const { salad, salad_status, logic } = useAppSelector((state) => state.Salad);
-  const { ingredients } = useAppSelector((state) => state.Ingredient);
+  const { salad, salad_status } = useAppSelector((state) => state.Salad);
+  const { businessLogic } = useAppSelector((state) => state.BusinessLogic);
+  const { products } = useAppSelector((state) => state.Product);
 
   const handleCloseSaladDialog = () => {
     dispatch(removeSaladState({}));
@@ -53,7 +54,7 @@ export const SaladDialog = () => {
     type: "cost" | "weight"
   ) => {
     const typeKey = type === "cost" ? "costPerServing" : "weightPerServing";
-    const saladProducts = ingredients.filter((elem) => {
+    const saladProducts = products.filter((elem) => {
       return saladIngredients.some((ele) => {
         return ele.id === elem.id;
       });
@@ -107,9 +108,9 @@ export const SaladDialog = () => {
               target cost/weight:
             </Typography>
             <Typography variant="subtitle1">
-              {logic.saladTypes[salad.size].targetCost + "$"}
+              {businessLogic.saladTypes[salad.size].targetCost + "$"}
               {" / "}
-              {logic.saladTypes[salad.size].targetWeight + "g"}
+              {businessLogic.saladTypes[salad.size].targetWeight + "g"}
             </Typography>
           </Stack>
         </DialogTitle>
@@ -126,7 +127,7 @@ export const SaladDialog = () => {
           </Stack>
 
           {salad?.ingredients.map((ingredient) => (
-            <IngredientCard
+            <ProductCard
               key={ingredient.id}
               ingredient_id={ingredient.id}
               numOfServings={ingredient.numOfServings}

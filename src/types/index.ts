@@ -9,7 +9,7 @@ export interface Salad {
   price: number;
 }
 
-export interface Ingredient {
+export interface Product {
   id: number;
   name: string;
   costPerServing: number;

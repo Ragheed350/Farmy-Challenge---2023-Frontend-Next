@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RequestStatus } from "../../utils/constants";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { AppThunk } from "../store";
-import { BusinessLogic, Salad } from "../../types";
+import { Salad } from "../../types";
 
 export interface SaladState {
   status: RequestStatus;
   salad_status: RequestStatus;
   salads: Salad[];
   salad?: Salad;
-  logic?: BusinessLogic;
 }
 
 const initialState: SaladState = {
@@ -75,14 +74,10 @@ const saladSlice = createSlice({
       );
       if (ind !== -1) state.salad.ingredients.splice(ind, 1);
     },
-    fetchLogic(state, { payload }) {
-      state.logic = payload;
-    },
   },
 });
 
-const { setStatus, setSaladStatus, fetch, get, fetchLogic } =
-  saladSlice.actions;
+const { setStatus, setSaladStatus, fetch, get } = saladSlice.actions;
 export const {
   editSaladState,
   editSaladIngredientsState,
@@ -126,17 +121,5 @@ export const UpdateSaladAsync =
       dispatch(setStatus("error"));
     }
   };
-
-export const FetchLogicAsync = (): AppThunk => async (dispatch) => {
-  dispatch(setStatus("loading"));
-  try {
-    const res = await axios.get<BusinessLogic>("/api/businessLogic");
-
-    dispatch(fetchLogic(res.data));
-    dispatch(setStatus("data"));
-  } catch (error) {
-    dispatch(setStatus("error"));
-  }
-};
 
 export default saladSlice;

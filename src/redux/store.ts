@@ -6,11 +6,13 @@ import {
   ThunkAction,
 } from "@reduxjs/toolkit";
 import SaladSlice from "@/redux/salad";
-import IngredientSlice from "@/redux/ingredient";
+import IngredientSlice from "@/src/redux/product";
+import BusinessLogic from "@/src/redux/logic";
 
 const reducers = combineReducers({
   [SaladSlice.name]: SaladSlice.reducer,
   [IngredientSlice.name]: IngredientSlice.reducer,
+  [BusinessLogic.name]: BusinessLogic.reducer,
 });
 
 export const store = configureStore({

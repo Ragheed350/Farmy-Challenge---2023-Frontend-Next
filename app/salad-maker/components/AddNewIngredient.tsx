@@ -5,14 +5,12 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "@/src/redux/hooks";
 import { addSaladIngredientsState } from "@/src/redux/salad";
 
-type Props = {};
-
-export const AddNewIngredient = (props: Props) => {
+export const AddNewIngredient = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const dispatch = useAppDispatch();
-  const { ingredients } = useAppSelector((state) => state.Ingredient);
+  const { products } = useAppSelector((state) => state.Product);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -43,7 +41,7 @@ export const AddNewIngredient = (props: Props) => {
           },
         }}
       >
-        {ingredients.map((el) => (
+        {products.map((el) => (
           <MenuItem key={el.id} id={String(el.id)} onClick={handleSelectItem}>
             {el.name}
           </MenuItem>

@@ -11,15 +11,12 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import Container from "@mui/material/Container";
 import { useAppDispatch, useAppSelector } from "../../src/redux/hooks";
-import {
-  FetchLogicAsync,
-  FetchSaladsAsync,
-  GetSaladAsync,
-} from "../../src/redux/salad";
+import { FetchSaladsAsync, GetSaladAsync } from "../../src/redux/salad";
 import { Button, Typography } from "@mui/material";
 import { SaladDialog } from "./components/SaladDialog";
 import { LoadingBox } from "@/src/components/LoadingBox";
-import { FetchIngredients } from "@/src/redux/ingredient";
+import { FetchProducts } from "@/src/redux/product";
+import { FetchLogicAsync } from "@/src/redux/logic";
 
 const SaladMaker = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +29,7 @@ const SaladMaker = () => {
 
   useEffect(() => {
     dispatch(FetchSaladsAsync());
-    dispatch(FetchIngredients());
+    dispatch(FetchProducts());
     dispatch(FetchLogicAsync());
   }, []);
 

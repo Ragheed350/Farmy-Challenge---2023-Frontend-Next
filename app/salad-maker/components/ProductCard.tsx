@@ -14,7 +14,6 @@ import AddIcon from "@mui/icons-material/Add";
 import {
   deleteSaladIngredientsState,
   editSaladIngredientsState,
-  editSaladState,
 } from "@/src/redux/salad";
 
 type Props = {
@@ -22,21 +21,21 @@ type Props = {
   numOfServings: number;
 };
 
-export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
+export const ProductCard = ({ ingredient_id, numOfServings }: Props) => {
   const dispatch = useAppDispatch();
-  const { status, ingredients } = useAppSelector((state) => state.Ingredient);
+  const { products } = useAppSelector((state) => state.Product);
 
-  const ingredient = useMemo(() => {
-    const ind = ingredients.findIndex((el) => el.id === ingredient_id);
-    if (ind !== -1) return ingredients[ind];
-  }, [ingredients, ingredient_id]);
+  const product = useMemo(() => {
+    const ind = products.findIndex((el) => el.id === ingredient_id);
+    if (ind !== -1) return products[ind];
+  }, [products, ingredient_id]);
 
   const handleDeleteIngredient = () => {
     dispatch(deleteSaladIngredientsState({ ingredient_id }));
   };
 
   const handleIncreaseIngredient = () => {
-    if (ingredient) {
+    if (product) {
       dispatch(
         editSaladIngredientsState({
           ingredient_id,
@@ -47,7 +46,7 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
   };
 
   const handleDecreaseIngredient = () => {
-    if (ingredient) {
+    if (product) {
       if (numOfServings > 1) {
         dispatch(
           editSaladIngredientsState({
@@ -69,7 +68,7 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
           alignItems={"center"}
         >
           <Grid item xs>
-            <Typography variant="h6">{ingredient?.name}</Typography>
+            <Typography variant="h6">{product?.name}</Typography>
           </Grid>
           <Grid item xs>
             <Stack direction="row" alignItems={"center"}>
@@ -106,12 +105,12 @@ export const IngredientCard = ({ ingredient_id, numOfServings }: Props) => {
           </Grid>
           <Grid item>
             <Typography>
-              {(ingredient?.weightPerServing * numOfServings).toFixed(2)}g
+              {(product?.weightPerServing * numOfServings).toFixed(2)}g
             </Typography>
           </Grid>
           <Grid item>
             <Typography>
-              {(ingredient?.costPerServing * numOfServings).toFixed(2)}$
+              {(product?.costPerServing * numOfServings).toFixed(2)}$
             </Typography>
           </Grid>
           <Grid item>

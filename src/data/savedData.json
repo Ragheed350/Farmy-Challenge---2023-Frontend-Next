@@ -331,20 +331,16 @@
 	"salads": [
 		{
 			"id": 1,
-			"name": "Example",
-			"size": "large",
+			"name": "Example Salad",
+			"size": "small",
 			"ingredients": [
 				{
 					"id": 1,
-					"numOfServings": 3
+					"numOfServings": 1
 				},
 				{
 					"id": 2,
 					"numOfServings": 4
-				},
-				{
-					"id": 4,
-					"numOfServings": 1
 				}
 			],
 			"cost": 0.3,
@@ -2315,20 +2311,16 @@
 		"salads": [
 			{
 				"id": 1,
-				"name": "Example",
-				"size": "large",
+				"name": "Example Salad",
+				"size": "small",
 				"ingredients": [
 					{
 						"id": 1,
-						"numOfServings": 3
+						"numOfServings": 1
 					},
 					{
 						"id": 2,
 						"numOfServings": 4
-					},
-					{
-						"id": 4,
-						"numOfServings": 1
 					}
 				],
 				"cost": 0.3,
